@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LUAN PERSONAL</title>
+<style>
+:root{--cyan:#39eaff;--blue:#168bff;--red:#ff3158;--panel:rgba(12,18,30,.82)}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;min-height:100vh;color:#f4f8ff;font-family:Arial,sans-serif;background:radial-gradient(ellipse at 15% 0%,#172d4a 0%,#080d18 45%,#03050a 100%);background-attachment:fixed;overflow-x:hidden}
+body:before,body:after{content:"";position:fixed;z-index:-1;pointer-events:none;border-radius:50%;filter:blur(3px);opacity:.45}
+body:before{width:260px;height:260px;top:12%;left:-130px;background:radial-gradient(circle,rgba(0,210,255,.28),transparent 70%);animation:drift 12s ease-in-out infinite alternate}
+body:after{width:340px;height:340px;right:-170px;bottom:8%;background:radial-gradient(circle,rgba(255,40,85,.2),transparent 70%);animation:drift 15s ease-in-out infinite alternate-reverse}
+@keyframes drift{to{transform:translate(80px,-45px) scale(1.2)}}
+header{position:sticky;top:0;z-index:10;padding:22px 14px;text-align:center;background:rgba(4,8,16,.82);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid rgba(57,234,255,.45);letter-spacing:4px;font-size:clamp(20px,5vw,28px);font-weight:1000;color:#fff;text-shadow:0 0 8px var(--cyan),0 0 24px var(--blue);animation:headerGlow 3s ease-in-out infinite alternate}
+@keyframes headerGlow{to{text-shadow:0 0 14px var(--cyan),0 0 34px var(--blue),0 0 50px rgba(255,49,88,.35)}}
+main{width:min(100% - 22px,560px);margin:auto;padding:18px 0 40px}
+.box{position:relative;isolation:isolate;overflow:hidden;background:linear-gradient(145deg,rgba(17,31,51,.9),rgba(7,12,22,.88));backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);padding:clamp(18px,5vw,25px);border-radius:22px;margin:17px 0;border:1px solid rgba(57,234,255,.25);box-shadow:0 15px 45px rgba(0,0,0,.28),inset 0 1px rgba(255,255,255,.05);animation:rise .65s cubic-bezier(.2,.8,.2,1) both;transition:transform .3s,border-color .3s,box-shadow .3s}
+.box:before{content:"";position:absolute;z-index:-1;inset:-1px;background:linear-gradient(115deg,transparent 20%,rgba(57,234,255,.09),transparent 65%);transform:translateX(-110%);animation:shine 7s ease-in-out infinite}
+@keyframes shine{55%,100%{transform:translateX(110%)}}
+.box:hover{transform:translateY(-3px);border-color:rgba(57,234,255,.65);box-shadow:0 18px 50px rgba(0,0,0,.35),0 0 24px rgba(0,190,255,.12)}
+@keyframes rise{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
+h2{text-align:center;color:var(--cyan);letter-spacing:1.5px;text-shadow:0 0 15px rgba(57,234,255,.35)}
+p{line-height:1.65;color:#d5e2f2}
+input,textarea{width:100%;padding:15px;margin:9px 0;border:1px solid #30455f;border-radius:13px;background:rgba(3,8,16,.8);color:white;font-size:16px;transition:.25s}
+input:focus,textarea:focus{outline:none;border-color:var(--cyan);box-shadow:0 0 0 3px rgba(57,234,255,.12),0 0 18px rgba(57,234,255,.16)}
+button{position:relative;overflow:hidden;padding:13px 17px;border:1px solid rgba(57,234,255,.35);border-radius:12px;background:linear-gradient(120deg,#38eaff,#168bff);color:#03101b;font-weight:800;letter-spacing:.35px;margin:5px;box-shadow:0 5px 18px rgba(0,170,255,.2);transition:transform .22s,box-shadow .22s,filter .22s;cursor:pointer}
+button:before{content:"";position:absolute;inset:0;background:linear-gradient(110deg,transparent 25%,rgba(255,255,255,.45),transparent 70%);transform:translateX(-130%);transition:transform .55s}
+button:hover{transform:translateY(-3px);filter:brightness(1.1);box-shadow:0 8px 25px rgba(0,190,255,.35)}button:hover:before{transform:translateX(130%)}button:active{transform:scale(.96)}
+.primary{width:100%}.secondary{background:linear-gradient(120deg,#26384f,#18283d);color:#eaf7ff;border-color:#415c78}
+.hidden{display:none!important}.center{text-align:center}
+.avatar{width:116px;height:116px;border-radius:50%;border:3px solid var(--cyan);object-fit:cover;display:block;margin:10px auto;box-shadow:0 0 0 7px rgba(57,234,255,.08),0 0 28px rgba(57,234,255,.5);animation:avatarFloat 4s ease-in-out infinite}
+@keyframes avatarFloat{50%{transform:translateY(-5px);box-shadow:0 0 0 11px rgba(57,234,255,.04),0 0 36px rgba(57,234,255,.7)}}
+nav{display:flex;flex-wrap:wrap;justify-content:center;gap:5px}nav button{background:rgba(32,52,76,.9);color:#e8f8ff}nav button:hover{background:var(--cyan);color:#001018}
+a{color:var(--cyan);text-shadow:0 0 8px rgba(57,234,255,.5)}
+#images{display:grid;grid-template-columns:repeat(auto-fill,minmax(90px,1fr));gap:9px;margin-top:14px}#images img{width:100%;aspect-ratio:1;object-fit:cover;margin:0;border-radius:13px;border:1px solid rgba(57,234,255,.35);transition:transform .25s,box-shadow .25s}#images img:hover{transform:scale(1.04);box-shadow:0 0 20px rgba(57,234,255,.3)}
+.message{min-height:22px;line-height:1.4;color:#ff9aab}
+.hero{position:relative;overflow:hidden;text-align:left;min-height:210px;padding:24px 20px;border-radius:18px;background:radial-gradient(ellipse at 80% 50%,rgba(255,49,88,.28),transparent 45%),linear-gradient(125deg,#111d30,#080c16 70%);border:1px solid rgba(255,49,88,.38);margin:18px 0}
+.hero:after{content:"CIVIC";position:absolute;right:-8px;bottom:-24px;font-size:clamp(64px,17vw,112px);font-weight:1000;font-style:italic;letter-spacing:-7px;color:rgba(255,255,255,.045);transform:skewX(-12deg);pointer-events:none}
+.hero-kicker{font-size:11px;letter-spacing:4px;color:#ff718b;font-weight:900}.hero h1{position:relative;z-index:1;margin:12px 0 8px;font-size:clamp(27px,7vw,42px);line-height:1.05;text-transform:uppercase}.hero h1 span{color:var(--red);text-shadow:0 0 20px rgba(255,49,88,.45)}.hero p{position:relative;z-index:1;max-width:290px;color:#c5d3e5}.hero-line{width:75px;height:3px;border-radius:9px;background:linear-gradient(90deg,var(--red),transparent);margin-top:17px}
+.tag-row{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-top:16px}.tag{font-size:12px;color:#bfefff;border:1px solid rgba(57,234,255,.25);background:rgba(57,234,255,.06);padding:7px 11px;border-radius:30px}
+@media(max-width:380px){nav button{padding:11px 12px;font-size:12px}.box{padding:17px}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition:none!important}}
+</style>
+</head>
+<body>
+<header>LUAN PERSONAL</header>
+<main>
+<section id="auth">
+ <div class="box">
+  <h2>ĐĂNG NHẬP</h2>
+  <input id="loginEmail" type="email" placeholder="Email" autocomplete="username">
+  <input id="loginPassword" type="password" placeholder="Mật khẩu" autocomplete="current-password">
+  <button class="primary" onclick="login()">ĐĂNG NHẬP</button>
+  <button class="secondary primary" onclick="showRegister()">CHƯA CÓ TÀI KHOẢN? ĐĂNG KÝ</button>
+  <p id="loginMessage" class="center message" aria-live="polite"></p>
+ </div>
+</section>
+
+<section id="register" class="hidden">
+ <div class="box">
+  <h2>ĐĂNG KÝ TÀI KHOẢN</h2>
+  <input id="regPhone" type="tel" placeholder="Số điện thoại" autocomplete="tel">
+  <input id="regEmail" type="email" placeholder="Email" autocomplete="email">
+  <input id="regPassword" type="password" placeholder="Mật khẩu (ít nhất 8 ký tự)" autocomplete="new-password">
+  <input id="regConfirm" type="password" placeholder="Nhập lại mật khẩu" autocomplete="new-password">
+  <button class="primary" onclick="register()">TẠO TÀI KHOẢN</button>
+  <button class="secondary primary" onclick="showLogin()">ĐÃ CÓ TÀI KHOẢN? ĐĂNG NHẬP</button>
+  <p id="regMessage" class="center message" aria-live="polite"></p>
+ </div>
+</section>
+
+<section id="website" class="hidden">
+ <div class="box center">
+  <img id="avatar" class="avatar" alt="Ảnh đại diện">
+  <h2 id="welcome">Xin chào!</h2>
+  <p>WELCOME TO MY PERSONAL WEBSITE</p>
+  <nav>
+   <button onclick="showPage('home')">Trang chủ</button>
+   <button onclick="showPage('profile')">Hồ sơ</button>
+   <button onclick="showPage('gallery')">Ảnh</button>
+   <button onclick="showPage('contact')">Liên hệ</button>
+  </nav>
+ </div>
+ <div id="home" class="box center">
+  <div class="hero">
+   <div class="hero-kicker">MY DREAM • MY JOURNEY</div>
+   <h1>HONDA <span>CIVIC</span><br>GEN 8</h1>
+   <p>Không ngừng học hỏi, không ngừng tiến về phía trước.</p>
+   <div class="hero-line"></div>
+  </div>
+  <h2>GIỚI THIỆU</h2>
+  <p>Chào mừng đến với thế giới riêng của Luân.</p>
+  <div class="tag-row"><span class="tag">🏎️ Honda Civic</span><span class="tag">🔧 Sửa chữa xe</span><span class="tag">💻 Công nghệ</span></div>
+ </div>
+ <div id="profile" class="box hidden">
+  <h2>HỒ SƠ CÁ NHÂN</h2>
+  <input id="realname" placeholder="Tên hiển thị">
+  <textarea id="bio" placeholder="Giới thiệu bản thân"></textarea>
+  <label>Ảnh đại diện</label>
+  <input id="photo" type="file" accept="image/*">
+  <button class="primary" onclick="saveProfile()">LƯU HỒ SƠ</button>
+ </div>
+ <div id="gallery" class="box hidden">
+  <h2>BỘ SƯU TẬP ẢNH</h2>
+  <input id="photos" type="file" accept="image/*" multiple>
+  <button class="primary" onclick="addPhotos()">THÊM ẢNH</button>
+  <div id="images"></div>
+ </div>
+ <div id="contact" class="box hidden">
+  <h2>LIÊN HỆ</h2>
+  <p>Facebook: <a id="fb" href="#">Chưa thêm</a></p>
+  <p>Zalo: <a id="zalo" href="#">Chưa thêm</a></p>
+  <input id="facebook" placeholder="Link Facebook">
+  <input id="zalonumber" placeholder="Số điện thoại Zalo">
+  <button class="primary" onclick="saveContact()">LƯU LIÊN HỆ</button>
+ </div>
+ <div class="box center">
+  <button class="secondary" onclick="logout()">ĐĂNG XUẤT</button>
+ </div>
+</section>
+</main>
+
+<script>
+const $=id=>document.getElementById(id);
+let currentUser="";
+
+function getUsers(){
+ try{return JSON.parse(localStorage.getItem("luanUsers")||"{}")}
+ catch(e){return {}}
+}
+function key(name){return "luan_"+currentUser+"_"+name}
+
+async function hashPassword(password){
+ if(!window.crypto || !crypto.subtle) throw new Error("Mã hóa không được hỗ trợ");
+ const data=new TextEncoder().encode(password);
+ const hash=await crypto.subtle.digest("SHA-256",data);
+ return Array.from(new Uint8Array(hash)).map(b=>b.toString(16).padStart(2,"0")).join("");
+}
+
+function showRegister(){
+ $("auth").classList.add("hidden");
+ $("register").classList.remove("hidden");
+ $("regMessage").innerText="";
+ window.scrollTo(0,0);
+}
+function showLogin(){
+ $("register").classList.add("hidden");
+ $("auth").classList.remove("hidden");
+ $("loginMessage").innerText="";
+ window.scrollTo(0,0);
+}
+
+async function register(){
+ const phone=$("regPhone").value.trim();
+ const email=$("regEmail").value.trim().toLowerCase();
+ const pass=$("regPassword").value;
+ const confirm=$("regConfirm").value;
+ if(!phone||!email||!pass||!confirm){
+  $("regMessage").innerText="Vui lòng nhập đầy đủ thông tin!";return;
+ }
+ if(!/^\S+@\S+\.\S+$/.test(email)){
+  $("regMessage").innerText="Email không hợp lệ!";return;
+ }
+ if(pass.length<8){
+  $("regMessage").innerText="Mật khẩu phải có ít nhất 8 ký tự!";return;
+ }
+ if(pass!==confirm){
+  $("regMessage").innerText="Mật khẩu nhập lại không khớp!";return;
+ }
+ const users=getUsers();
+ if(users[email]){
+  $("regMessage").innerText="Email đã được đăng ký!";return;
+ }
+ try{
+  const hash=await hashPassword(pass);
+  users[email]={phone:phone,password:hash};
+  localStorage.setItem("luanUsers",JSON.stringify(users));
+  $("loginEmail").value=email;
+  $("loginPassword").value="";
+  $("regPhone").value="";
+  $("regEmail").value="";
+  $("regPassword").value="";
+  $("regConfirm").value="";
+  $("register").classList.add("hidden");
+  $("auth").classList.remove("hidden");
+  $("loginMessage").innerText="Đăng ký thành công! Hãy đăng nhập.";
+  window.scrollTo(0,0);
+ }catch(e){
+  $("regMessage").innerText="Không thể tạo tài khoản trên trình duyệt này.";
+ }
+}
+
+async function login(){
+ const email=$("loginEmail").value.trim().toLowerCase();
+ const pass=$("loginPassword").value;
+ const users=getUsers();
+ if(!email||!pass){$("loginMessage").innerText="Nhập email và mật khẩu!";return}
+ if(!users[email]){$("loginMessage").innerText="Tài khoản không tồn tại!";return}
+ try{
+  const hash=await hashPassword(pass);
+  if(users[email].password!==hash){$("loginMessage").innerText="Sai mật khẩu!";return}
+  currentUser=email;
+  $("auth").classList.add("hidden");
+  $("register").classList.add("hidden");
+  $("website").classList.remove("hidden");
+  $("loginMessage").innerText="";
+  loadProfile();
+ }catch(e){$("loginMessage").innerText="Không thể đăng nhập. Hãy mở website bằng trình duyệt hỗ trợ HTTPS."}
+}
+function logout(){
+ currentUser="";
+ $("website").classList.add("hidden");
+ $("auth").classList.remove("hidden");
+ $("loginPassword").value="";
+ $("loginMessage").innerText="";
+ window.scrollTo(0,0);
+}
+function showPage(page){
+ ["home","profile","gallery","contact"].forEach(id=>$(id).classList.toggle("hidden",id!==page));
+ window.scrollTo(0,0);
+}
+function loadProfile(){
+ $("welcome").innerText="Xin chào "+(localStorage.getItem(key("name"))||currentUser);
+ $("realname").value=localStorage.getItem(key("name"))||"";
+ $("bio").value=localStorage.getItem(key("bio"))||"";
+ $("avatar").src=localStorage.getItem(key("avatar"))||"https://placehold.co/200x200/222/fff?text=LUAN";
+ $("fb").href=localStorage.getItem(key("fb"))||"#";
+ $("fb").innerText=localStorage.getItem(key("fb"))||"Chưa thêm";
+ const z=localStorage.getItem(key("zalo"))||"";
+ $("zalo").href=z?"https://zalo.me/"+z:"#";
+ $("zalo").innerText=z||"Chưa thêm";
+ $("facebook").value=localStorage.getItem(key("fb"))||"";
+ $("zalonumber").value=z;
+ loadGallery();
+ showPage("home");
+}
+function saveProfile(){
+ localStorage.setItem(key("name"),$("realname").value);
+ localStorage.setItem(key("bio"),$("bio").value);
+ $("welcome").innerText="Xin chào "+($("realname").value||currentUser);
+ alert("Đã lưu hồ sơ!");
+}
+$("photo").addEventListener("change",e=>{
+ const file=e.target.files[0];if(!file)return;
+ const reader=new FileReader();
+ reader.onload=()=>{
+  try{localStorage.setItem(key("avatar"),reader.result);$("avatar").src=reader.result}
+  catch(err){alert("Ảnh quá lớn, hãy chọn ảnh nhỏ hơn.")}
+ };
+ reader.readAsDataURL(file);
+});
+function loadGallery(){
+ $("images").innerHTML="";
+ let list=[];
+ try{list=JSON.parse(localStorage.getItem(key("gallery"))||"[]")}catch(e){}
+ list.forEach(src=>{
+  const img=document.createElement("img");img.src=src;$("images").appendChild(img);
+ });
+}
+function addPhotos(){
+ const files=[...$("photos").files];if(!files.length)return;
+ let list=[];
+ try{list=JSON.parse(localStorage.getItem(key("gallery"))||"[]")}catch(e){}
+ let pending=files.length;
+ files.forEach(file=>{
+  const reader=new FileReader();
+  reader.onload=()=>{
+   list.push(reader.result);pending--;
+   if(pending===0){
+    try{localStorage.setItem(key("gallery"),JSON.stringify(list));loadGallery();$("photos").value=""}
+    catch(err){alert("Ảnh quá lớn để lưu. Hãy chọn ít ảnh hoặc ảnh nhỏ hơn.")}
+   }
+  };
+  reader.readAsDataURL(file);
+ });
+}
+function saveContact(){
+ const fb=$("facebook").value.trim();
+ const z=$("zalonumber").value.trim();
+ localStorage.setItem(key("fb"),fb);
+ localStorage.setItem(key("zalo"),z);
+ loadProfile();
+ alert("Đã lưu liên hệ!");
+}
+</script>
+</body>
+</html>
