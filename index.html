@@ -4,219 +4,350 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#050816">
-<title>LUAN ALBUM VIP</title>
+<meta name="theme-color" content="#050713">
+<title>LUAN ALBUM VIP PRO MAX</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-body{background:#050816;color:#fff;font-family:Arial,sans-serif;min-height:100vh}
-header{text-align:center;padding:35px 15px}
-h1{
-font-size:clamp(28px,7vw,45px);
-background:linear-gradient(90deg,#00eaff,#a855f7,#ff00a8,#00eaff);
-background-size:300%;
-color:transparent;background-clip:text;
-animation:rgb 5s linear infinite
-}
+:root{--cyan:#00eaff;--pink:#ff32d2;--purple:#8c52ff}
+body{background:#050713;color:#fff;font-family:Arial,sans-serif;min-height:100vh;overflow-x:hidden}
+body:before{content:"";position:fixed;inset:0;pointer-events:none;background:radial-gradient(circle at 10% 10%,#122b5c66,transparent 35%),radial-gradient(circle at 90% 80%,#54105a55,transparent 35%);z-index:-1}
+#loader{position:fixed;inset:0;background:#050713;z-index:99;display:flex;align-items:center;justify-content:center;flex-direction:column;transition:.6s}
+.logo{font-size:clamp(27px,7vw,48px);font-weight:1000;letter-spacing:2px;background:linear-gradient(90deg,#00eaff,#8c52ff,#ff32d2,#00eaff);background-size:300%;color:transparent;background-clip:text;animation:rgb 4s linear infinite}
 @keyframes rgb{to{background-position:300%}}
-header p{color:#9caecb;margin-top:10px}
-main{max-width:1100px;margin:auto;padding:15px}
-.panel{background:#101a30;border:1px solid #245078;border-radius:18px;padding:18px;margin-bottom:18px}
-.controls{display:flex;gap:10px;flex-wrap:wrap}
-button,.pick,select{
-background:#122b48;color:white;border:1px solid #00bde9;
-padding:12px 15px;border-radius:10px;cursor:pointer
-}
-input[type=file]{display:none}
-button:hover,.pick:hover{background:#07516a}
-#grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(145px,1fr));gap:13px}
-.photo{background:#0b1427;border:1px solid #263d62;border-radius:13px;overflow:hidden}
-.photo img{width:100%;height:160px;object-fit:cover;cursor:pointer}
-.info{padding:10px}
-.info p{font-size:13px;color:#9eb5d3;overflow-wrap:anywhere}
-.actions{display:flex;gap:6px;margin-top:8px}
-.actions button{flex:1;padding:8px;font-size:12px}
-.empty{text-align:center;color:#91a7c7;padding:35px}
-#viewer{display:none;position:fixed;inset:0;background:#000e;z-index:10;align-items:center;justify-content:center;padding:15px}
-#viewer img{max-width:95%;max-height:85%;object-fit:contain}
-#viewer button{position:absolute;right:15px;top:15px}
-footer{text-align:center;color:#627b9e;padding:25px;font-size:12px}
+.loaderbar{width:180px;height:4px;background:#252943;border-radius:20px;margin-top:20px;overflow:hidden}
+.loaderbar:after{content:"";display:block;height:100%;width:40%;background:var(--cyan);animation:load 1.2s ease-in-out infinite}
+@keyframes load{from{transform:translateX(-110%)}to{transform:translateX(360%)}}
+header{text-align:center;padding:36px 15px 24px}
+.subtitle{color:#9ba8c8;font-size:12px;letter-spacing:4px;margin-top:9px}
+.topline{height:2px;background:linear-gradient(90deg,transparent,var(--cyan),var(--pink),transparent);box-shadow:0 0 15px var(--cyan)}
+.container{max-width:1100px;margin:auto;padding:18px}
+.panel{background:#0b1021d9;border:1px solid #29304c;border-radius:18px;padding:19px;margin:14px 0;box-shadow:0 0 25px #00eaff0a}
+h2{font-size:17px;margin-bottom:14px;color:var(--cyan)}
+input,select{width:100%;padding:13px;margin:6px 0;background:#080d1d;border:1px solid #303a5c;border-radius:10px;color:white;outline:none}
+button,.btn{border:0;padding:12px 16px;border-radius:10px;color:#fff;font-weight:bold;cursor:pointer;background:linear-gradient(110deg,#087dba,#7737bc);margin:5px 3px;box-shadow:0 0 12px #00bfff22}
+button:hover{filter:brightness(1.25);transform:translateY(-1px)}
+.secondary{background:#222a42}
+.danger{background:#9b244b}
+.green{background:#087e69}
+#loginPanel{max-width:440px;margin:20px auto}
+#adminPanel{display:none}
+.status{color:#9ba8c8;font-size:12px;margin-top:8px}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin:15px 0}
+.tabs button{background:#161e37}
+.tabs button.active{background:linear-gradient(90deg,#007fae,#7836b7)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(145px,1fr));gap:13px}
+.photo{background:#10182d;border:1px solid #293653;border-radius:14px;overflow:hidden;position:relative}
+.photo img{width:100%;height:155px;object-fit:cover;display:block;cursor:pointer}
+.photoInfo{padding:10px;font-size:12px;overflow-wrap:anywhere}
+.photoInfo button{font-size:11px;padding:8px}
+.tag{display:inline-block;padding:4px 7px;border-radius:6px;background:#182c48;color:#00eaff;margin:5px 0}
+.empty{text-align:center;color:#8190ad;padding:35px 10px}
+footer{text-align:center;color:#63718f;font-size:11px;padding:30px 10px}
+#viewer{display:none;position:fixed;inset:0;background:#000e;z-index:90;align-items:center;justify-content:center;padding:15px}
+#viewer img{max-width:95%;max-height:80vh;border-radius:12px;object-fit:contain}
+#viewer button{position:absolute;top:15px;right:15px}
+#notice{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);background:#151e35;border:1px solid #00eaff;padding:12px 18px;border-radius:12px;z-index:100;display:none;max-width:90%;text-align:center;font-size:13px}
+.small{font-size:12px;color:#98a6c5;line-height:1.7}
+@media(max-width:500px){.container{padding:12px}.panel{padding:14px}.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.photo img{height:135px}}
 </style>
 </head>
 <body>
+
+<div id="loader">
+  <div class="logo">LUAN ALBUM</div>
+  <div class="subtitle">VIP PRO MAX EDITION</div>
+  <div class="loaderbar"></div>
+</div>
+
 <header>
-<h1>LUAN ALBUM VIP</h1>
-<p>MY PRIVATE PHOTO STORAGE • VIP PRO MAX</p>
+  <div class="logo">LUAN ALBUM</div>
+  <div class="subtitle">PRIVATE • PUBLIC • CLOUD STORAGE</div>
 </header>
+<div class="topline"></div>
 
-<main>
-<section class="panel">
-<h3>📸 QUẢN LÝ HÌNH ẢNH</h3>
-<br>
-<div class="controls">
-<label class="pick" for="upload">＋ THÊM ẢNH</label>
-<input id="upload" type="file" accept="image/*" multiple>
-<select id="category">
-<option>Ảnh cá nhân</option>
-<option>Xe Civic</option>
-<option>Du lịch</option>
-<option>Khác</option>
-</select>
-<button onclick="exportAll()">TẢI TẤT CẢ</button>
-</div>
-<br>
-<p style="color:#8da9cb;font-size:12px">
-Ảnh được lưu trong trình duyệt trên thiết bị này.
-</p>
+<main class="container">
+
+<section class="panel" id="loginPanel">
+  <h2>🔐 ADMIN LOGIN</h2>
+  <input id="email" type="email" placeholder="Email quản trị">
+  <input id="password" type="password" placeholder="Mật khẩu">
+  <button style="width:100%" onclick="login()">ĐĂNG NHẬP</button>
+  <div class="status" id="loginStatus">Chỉ tài khoản quản trị mới có thể tải và quản lý ảnh.</div>
+</section>
+
+<section class="panel" id="adminPanel">
+  <h2>⚡ QUẢN TRỊ ALBUM</h2>
+  <div class="small" id="adminEmail"></div>
+  <input id="files" type="file" accept="image/*" multiple>
+  <select id="category">
+    <option>Khác</option>
+    <option>Cá nhân</option>
+    <option>Gia đình</option>
+    <option>Bạn bè</option>
+    <option>Xe cộ</option>
+    <option>Kỷ niệm</option>
+  </select>
+  <button onclick="uploadPhotos()">⬆ TẢI ẢNH LÊN</button>
+  <button class="secondary" onclick="logout()">ĐĂNG XUẤT</button>
+  <div class="status" id="uploadStatus">Ảnh mới mặc định ở chế độ RIÊNG TƯ.</div>
 </section>
 
 <section class="panel">
-<div class="controls" style="justify-content:space-between">
-<h3>🖼️ THƯ VIỆN ẢNH</h3>
-<select id="filter" onchange="render()">
-<option value="">Tất cả ảnh</option>
-<option>Ảnh cá nhân</option>
-<option>Xe Civic</option>
-<option>Du lịch</option>
-<option>Khác</option>
-</select>
-</div>
-<br>
-<div id="grid"><div class="empty">Đang tải thư viện...</div></div>
+  <h2>🖼️ THƯ VIỆN ẢNH</h2>
+  <div class="tabs">
+    <button class="active" onclick="setFilter('all',this)">TẤT CẢ ẢNH</button>
+    <button onclick="setFilter('public',this)">🌐 CÔNG KHAI</button>
+    <button onclick="setFilter('private',this)">🔒 RIÊNG TƯ</button>
+  </div>
+  <div class="small" id="galleryStatus">Đang kết nối thư viện...</div>
+  <div class="grid" id="gallery"></div>
 </section>
+
 </main>
 
-<div id="viewer" onclick="closeViewer()">
-<button>ĐÓNG ✕</button>
-<img id="big">
-</div>
+<footer>© 2026 LUAN ALBUM • VIP PRO MAX<br>POWERED BY SUPABASE CLOUD</footer>
 
-<footer>© 2026 LUAN ALBUM VIP • ALL RIGHTS RESERVED</footer>
+<div id="viewer" onclick="closeViewer()">
+  <button onclick="closeViewer()">ĐÓNG ✕</button>
+  <img id="viewerImg" src="" alt="Ảnh xem trước">
+</div>
+<div id="notice"></div>
 
 <script>
-const DB='LUAN_ALBUM_DATABASE';
-let database;
+const SUPABASE_URL = "https://vejnqqlrnmtbpocgcbsb.supabase.co";
+const SUPABASE_KEY = "sb_publishable_ns4mmTmUGeY-G0woSaYpDQ_9XRKotqf";
+const BUCKET = "photos";
 
-const request=indexedDB.open(DB,1);
+const db = window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+let currentUser = null;
+let allPhotos = [];
+let filterMode = "all";
+let signedUrls = {};
 
-request.onupgradeneeded=()=>{
-let db=request.result;
-db.createObjectStore('photos',{keyPath:'id',autoIncrement:true});
-};
-
-request.onsuccess=()=>{
-database=request.result;
-render();
-};
-
-function store(mode='readonly'){
-return database.transaction('photos',mode).objectStore('photos');
+function notify(message){
+  const el=document.getElementById("notice");
+  el.textContent=message;
+  el.style.display="block";
+  clearTimeout(window.noticeTimer);
+  window.noticeTimer=setTimeout(()=>el.style.display="none",3500);
 }
 
-function getAll(){
-return new Promise(resolve=>{
-let r=store().getAll();
-r.onsuccess=()=>resolve(r.result);
+function escapeHTML(value){
+  return String(value??"").replace(/[&<>"']/g,c=>({
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+  }[c]));
+}
+
+async function getUrl(path){
+  if(signedUrls[path] && signedUrls[path].expires>Date.now()) return signedUrls[path].url;
+  const {data,error}=await db.storage.from(BUCKET).createSignedUrl(path,3600);
+  if(error) throw error;
+  signedUrls[path]={url:data.signedUrl,expires:Date.now()+3500000};
+  return data.signedUrl;
+}
+
+async function login(){
+  const email=document.getElementById("email").value.trim();
+  const password=document.getElementById("password").value;
+  const status=document.getElementById("loginStatus");
+  if(!email||!password){status.textContent="Nhập email và mật khẩu.";return;}
+  status.textContent="Đang đăng nhập...";
+  const {error}=await db.auth.signInWithPassword({email,password});
+  if(error){status.textContent=error.message;return;}
+  notify("Đăng nhập thành công!");
+}
+
+async function logout(){
+  await db.auth.signOut();
+  notify("Đã đăng xuất.");
+}
+
+async function updateAuth(session){
+  currentUser=session?.user||null;
+  document.getElementById("adminPanel").style.display=currentUser?"block":"none";
+  document.getElementById("loginPanel").style.display=currentUser?"none":"block";
+  document.getElementById("adminEmail").textContent=currentUser?"Đang đăng nhập: "+currentUser.email:"";
+  await loadPhotos();
+}
+
+db.auth.onAuthStateChange((event,session)=>{
+  setTimeout(()=>updateAuth(session),0);
 });
+
+async function loadPhotos(){
+  const gallery=document.getElementById("gallery");
+  const status=document.getElementById("galleryStatus");
+  gallery.innerHTML="";
+  status.textContent="Đang tải ảnh...";
+  signedUrls={};
+
+  const {data,error}=await db.from("album_photos")
+    .select("*").order("created_at",{ascending:false});
+
+  if(error){
+    status.textContent="Lỗi tải ảnh: "+error.message;
+    return;
+  }
+  allPhotos=data||[];
+  renderPhotos();
 }
 
-document.getElementById('upload').onchange=async e=>{
-for(const file of e.target.files){
-if(!file.type.startsWith('image/'))continue;
-await new Promise(resolve=>{
-let r=store('readwrite').add({
-name:file.name,
-category:document.getElementById('category').value,
-blob:file,
-date:Date.now()
-});
-r.onsuccess=resolve;
-});
-}
-e.target.value='';
-render();
-};
+async function renderPhotos(){
+  const gallery=document.getElementById("gallery");
+  const status=document.getElementById("galleryStatus");
+  gallery.innerHTML="";
+  const photos=allPhotos.filter(p=>filterMode==="all"||p.visibility===filterMode);
+  status.textContent=photos.length+" ảnh được hiển thị";
 
-async function render(){
-if(!database)return;
-let photos=await getAll();
-let filter=document.getElementById('filter').value;
-photos=photos.filter(p=>!filter||p.category===filter);
+  if(!photos.length){
+    gallery.innerHTML='<div class="empty">Chưa có ảnh trong mục này ✨</div>';
+    return;
+  }
 
-let grid=document.getElementById('grid');
-grid.innerHTML='';
+  for(const p of photos){
+    const card=document.createElement("div");
+    card.className="photo";
+    const info=document.createElement("div");
+    info.className="photoInfo";
+    card.appendChild(info);
+    gallery.appendChild(card);
 
-if(!photos.length){
-grid.innerHTML='<div class="empty">Chưa có hình ảnh nào 📷</div>';
-return;
-}
+    try{
+      const url=await getUrl(p.path);
+      const img=document.createElement("img");
+      img.src=url;
+      img.alt=p.original_name;
+      img.loading="lazy";
+      img.onclick=()=>openViewer(url);
+      card.insertBefore(img,info);
 
-photos.reverse().forEach(p=>{
-let url=URL.createObjectURL(p.blob);
-let card=document.createElement('div');
-card.className='photo';
+      const visibility=p.visibility==="public"?"🌐 CÔNG KHAI":"🔒 RIÊNG TƯ";
+      info.innerHTML=
+        '<div><b>'+escapeHTML(p.original_name)+'</b></div>'+
+        '<div class="tag">'+visibility+'</div>'+
+        '<div class="small">'+escapeHTML(p.category)+'</div>'+
+        '<button class="green" onclick="downloadPhoto(\''+p.id+'\')">TẢI ẢNH</button>';
 
-let img=document.createElement('img');
-img.src=url;
-img.onclick=()=>showImage(url);
-
-let info=document.createElement('div');
-info.className='info';
-
-let name=document.createElement('p');
-name.textContent=p.name;
-
-let cat=document.createElement('p');
-cat.textContent='📁 '+p.category;
-
-let actions=document.createElement('div');
-actions.className='actions';
-
-let download=document.createElement('button');
-download.textContent='TẢI';
-download.onclick=()=>downloadPhoto(p);
-
-let del=document.createElement('button');
-del.textContent='XÓA';
-del.onclick=async()=>{
-if(confirm('Bạn muốn xóa ảnh này?')){
-await new Promise(resolve=>{
-let r=store('readwrite').delete(p.id);
-r.onsuccess=resolve;
-});
-render();
-}
-};
-
-actions.append(download,del);
-info.append(name,cat,actions);
-card.append(img,info);
-grid.append(card);
-});
+      if(currentUser && p.owner_id===currentUser.id){
+        info.innerHTML+=
+          '<button onclick="toggleVisibility(\''+p.id+'\')">'+
+          (p.visibility==="public"?"ĐẶT RIÊNG TƯ":"ĐẶT CÔNG KHAI")+
+          '</button>'+
+          '<button class="danger" onclick="deletePhoto(\''+p.id+'\')">XÓA</button>';
+      }
+    }catch(e){
+      info.textContent="Không tải được ảnh: "+e.message;
+    }
+  }
 }
 
-function downloadPhoto(p){
-let url=URL.createObjectURL(p.blob);
-let a=document.createElement('a');
-a.href=url;
-a.download=p.name;
-a.click();
-setTimeout(()=>URL.revokeObjectURL(url),1000);
+function setFilter(mode,button){
+  filterMode=mode;
+  document.querySelectorAll(".tabs button").forEach(b=>b.classList.remove("active"));
+  button.classList.add("active");
+  renderPhotos();
 }
 
-async function exportAll(){
-let photos=await getAll();
-if(!photos.length)return alert('Chưa có ảnh!');
-photos.forEach((p,i)=>setTimeout(()=>downloadPhoto(p),i*300));
+async function uploadPhotos(){
+  if(!currentUser){notify("Hãy đăng nhập quản trị.");return;}
+  const input=document.getElementById("files");
+  const files=Array.from(input.files||[]);
+  const status=document.getElementById("uploadStatus");
+  if(!files.length){notify("Chọn ảnh trước nhé.");return;}
+
+  status.textContent="Đang tải ảnh...";
+  let success=0;
+
+  for(const file of files){
+    if(!file.type.startsWith("image/")) continue;
+    const safeName=file.name.replace(/[^a-zA-Z0-9._-]/g,"_");
+    const path=currentUser.id+"/"+crypto.randomUUID()+"_"+safeName;
+
+    const {error:uploadError}=await db.storage.from(BUCKET)
+      .upload(path,file,{contentType:file.type,upsert:false});
+
+    if(uploadError){
+      console.error(uploadError);
+      continue;
+    }
+
+    const {error:insertError}=await db.from("album_photos").insert({
+      owner_id:currentUser.id,
+      path:path,
+      original_name:file.name,
+      category:document.getElementById("category").value,
+      visibility:"private"
+    });
+
+    if(insertError){
+      await db.storage.from(BUCKET).remove([path]);
+      console.error(insertError);
+      continue;
+    }
+    success++;
+  }
+
+  input.value="";
+  status.textContent="Đã tải thành công "+success+"/"+files.length+" ảnh.";
+  notify("Đã tải "+success+" ảnh lên đám mây.");
+  await loadPhotos();
 }
 
-function showImage(url){
-document.getElementById('big').src=url;
-document.getElementById('viewer').style.display='flex';
+async function toggleVisibility(id){
+  const p=allPhotos.find(x=>x.id===id);
+  if(!p||!currentUser||p.owner_id!==currentUser.id)return;
+  const next=p.visibility==="public"?"private":"public";
+  const {error}=await db.from("album_photos")
+    .update({visibility:next}).eq("id",id);
+  if(error){notify("Không đổi được quyền: "+error.message);return;}
+  notify(next==="public"?"Ảnh đã công khai.":"Ảnh đã chuyển sang riêng tư.");
+  await loadPhotos();
 }
 
+async function deletePhoto(id){
+  const p=allPhotos.find(x=>x.id===id);
+  if(!p||!currentUser||p.owner_id!==currentUser.id)return;
+  if(!confirm("M chắc chắn muốn xóa ảnh này?"))return;
+
+  const {error:removeError}=await db.storage.from(BUCKET).remove([p.path]);
+  if(removeError){notify("Lỗi xóa file: "+removeError.message);return;}
+
+  const {error}=await db.from("album_photos").delete().eq("id",id);
+  if(error){notify("Lỗi xóa dữ liệu: "+error.message);return;}
+  notify("Đã xóa ảnh.");
+  await loadPhotos();
+}
+
+async function downloadPhoto(id){
+  const p=allPhotos.find(x=>x.id===id);
+  if(!p)return;
+  try{
+    const url=await getUrl(p.path);
+    const a=document.createElement("a");
+    a.href=url;
+    a.download=p.original_name;
+    a.target="_blank";
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+  }catch(e){notify("Không tải được: "+e.message);}
+}
+
+function openViewer(url){
+  document.getElementById("viewerImg").src=url;
+  document.getElementById("viewer").style.display="flex";
+}
 function closeViewer(){
-document.getElementById('viewer').style.display='none';
+  document.getElementById("viewer").style.display="none";
+  document.getElementById("viewerImg").src="";
 }
+
+(async()=>{
+  const {data:{session}}=await db.auth.getSession();
+  await updateAuth(session);
+  setTimeout(()=>document.getElementById("loader").style.display="none",700);
+})();
 </script>
 </body>
 </html>
